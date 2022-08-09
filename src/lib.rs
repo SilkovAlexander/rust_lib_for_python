@@ -12,13 +12,11 @@ fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
 fn test_lib(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     m.add_function(wrap_pyfunction!(call_sleep, m)?)?;
-    m.add_function(wrap_pyfunction!(init, m)?)?;
     Ok(())
 }
 
 async fn rust_sleep() {
     tokio::time::sleep(Duration::from_secs(1)).await;
-    // async_std::task::sleep(Duration::from_secs(1)).await;
 }
 
 #[pyfunction]
@@ -32,12 +30,3 @@ fn call_sleep(py: Python) -> PyResult<&PyAny> {
     )
 }
 
-use tokio::runtime::Builder;
-
-#[pyfunction]
-fn init() -> PyResult<()> {
-    let mut runtime = Builder::new_multi_thread();
-    runtime.enable_time();
-    pyo3_asyncio::tokio::init(runtime);
-    Ok(())
-}
