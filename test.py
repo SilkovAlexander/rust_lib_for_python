@@ -5,12 +5,16 @@ import asyncio
 lib = importlib.import_module('.test_lib', 'lib')
 res = lib.sum_as_string(1, 2)
 print(f"1 + 2 = {res}")
+assert res == '3'
 
 
 async def func():
+    interval = 2
     start_time = time.time()
-    await lib.call_sleep(2)
-    print(time.time() - start_time)
+    await lib.call_sleep(interval)
+    pause = time.time() - start_time
+    print(f"{pause=}")
+    assert pause >= interval
 
 asyncio.run(func())
 print("Lib works successfully")
