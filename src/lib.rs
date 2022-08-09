@@ -15,16 +15,16 @@ fn test_lib(_py: Python, m: &PyModule) -> PyResult<()> {
     Ok(())
 }
 
-async fn rust_sleep() {
-    tokio::time::sleep(Duration::from_secs(1)).await;
+async fn rust_sleep(sec: u64) {
+    tokio::time::sleep(Duration::from_secs(sec)).await;
 }
 
 #[pyfunction]
-fn call_sleep(py: Python) -> PyResult<&PyAny> {
+fn call_sleep(py: Python, sec: u64) -> PyResult<&PyAny> {
     pyo3_asyncio::tokio::future_into_py(
         py,
         async move {
-            rust_sleep().await;
+            rust_sleep(sec).await;
             Ok(())
         }
     )

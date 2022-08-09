@@ -9,7 +9,7 @@ print(f"1 + 2 = {res}")
 
 async def func():
     start_time = time.time()
-    await lib.call_sleep()
+    await lib.call_sleep(2)
     print(time.time() - start_time)
 
 asyncio.run(func())
