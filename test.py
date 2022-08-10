@@ -16,5 +16,13 @@ async def func():
     print(f"{pause=}")
     assert pause >= interval
 
+    fut = lib.return_value()
+    print(fut)
+    print(asyncio.isfuture(fut))
+    await asyncio.wait_for(fut, 10)
+    print(fut)
+    print(fut.done())
+    print(fut.result())
+
 asyncio.run(func())
 print("Lib works successfully")

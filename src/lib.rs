@@ -12,6 +12,7 @@ fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
 fn test_lib(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     m.add_function(wrap_pyfunction!(call_sleep, m)?)?;
+    m.add_function(wrap_pyfunction!(return_value, m)?)?;
     Ok(())
 }
 
@@ -26,6 +27,17 @@ fn call_sleep(py: Python, sec: u64) -> PyResult<&PyAny> {
         async move {
             rust_sleep(sec).await;
             Ok(())
+        }
+    )
+}
+
+#[pyfunction]
+fn return_value(py: Python) -> PyResult<&PyAny> {
+    pyo3_asyncio::tokio::future_into_py(
+        py,
+        async move {
+            rust_sleep(1).await;
+            Ok(1)
         }
     )
 }
